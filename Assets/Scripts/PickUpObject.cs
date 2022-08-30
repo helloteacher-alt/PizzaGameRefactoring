@@ -112,9 +112,9 @@ public class PickUpObject : MonoBehaviour
     {
         foreach (SpriteRenderer topping in possibleToppingsList)
         {
-            if(holdInHand.ContainsKey(topping.gameObject.name)&& holdInHand[topping.gameObject.name] == 1 )
+            if (holdInHand.ContainsKey(topping.gameObject.name) && holdInHand[topping.gameObject.name] == 1)
             {
-                topping.color = new Color(207f/255f,132f/255f,46f/255f);
+                topping.color = new Color(207f / 255f, 132f / 255f, 46f / 255f);
             }
             else topping.color = Color.white;
             if (holdInHand.ContainsKey(topping.gameObject.name))
