@@ -14,37 +14,36 @@ public class PlayerMovement : MonoBehaviour
         animator = GetComponent<Animator>();
     }
 
-    void Update()
+    public string[] animationKeys = { "Idle", "walkLeft", "walkRight", "back"};
+
+    void EnableAnimation(int index)
     {
-        if (Input.GetKey(KeyCode.UpArrow))
+        // เซ็ตแอนิเมชันเวลาที่ index เป็นค่า i
+        for (int i = 0; i < animationKeys.Length; i++) animator.SetBool(animationKeys[i], index == i);
+    }
+
+    void HandleAnimator()
+    {
+        if (Input.GetKeyDown(KeyCode.DownArrow)) EnableAnimation(0);
+        else if (Input.GetKeyDown(KeyCode.LeftArrow)) EnableAnimation(1);
+        else if (Input.GetKeyDown(KeyCode.RightArrow)) EnableAnimation(2);
+        else if (Input.GetKeyDown(KeyCode.UpArrow)) EnableAnimation(3);
+
+        if(Input.GetKeyUp(KeyCode.DownArrow) || Input.GetKeyUp(KeyCode.LeftArrow) || Input.GetKeyUp(KeyCode.RightArrow) || Input.GetKeyUp(KeyCode.UpArrow) )
         {
-            animator.SetBool("Idle", false);
-            animator.SetBool("walkLeft", false);
-            animator.SetBool("walkRight", false);
-            animator.SetBool("back", true);
+            EnableAnimation(0);
         }
-        else if (Input.GetKey(KeyCode.DownArrow))
-        {
-            animator.SetBool("Idle", true);
-            animator.SetBool("walkLeft", false);
-            animator.SetBool("walkRight", false);
-            animator.SetBool("back", false);
-        }
-        else if (Input.GetKey(KeyCode.LeftArrow))
-        {
-            animator.SetBool("Idle", false);
-            animator.SetBool("walkLeft", true);
-            animator.SetBool("walkRight", false);
-            animator.SetBool("back", false);
-        }
-        else if (Input.GetKey(KeyCode.RightArrow))
-        {
-            animator.SetBool("Idle", false);
-            animator.SetBool("walkLeft", false);
-            animator.SetBool("walkRight", true);
-            animator.SetBool("back", false);
-        }
+    }
+
+    void HandleDirection()
+    {
         Vector3 direction = new Vector3(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"), 0.0f);
         rigibody.velocity = direction * Time.deltaTime * speed;
+    }
+
+    void Update()
+    {
+        HandleAnimator();
+        HandleDirection();
     }
 }
